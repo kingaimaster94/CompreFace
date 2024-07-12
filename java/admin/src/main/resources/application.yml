@@ -1,0 +1,142 @@
+server:
+  port: ${CRUD_PORT:8080}
+  tomcat:
+    relaxed-path-chars: [ '[', ']' ]
+    relaxed-query-chars: [ '[', ']' ]
+
+app:
+  security:
+    oauth2:
+      clients:
+        COMMON:
+          access-token-validity: ${COMMON_ACCESS_TOKEN_VALIDITY:2400}
+          authorities: ROLE_APP_LOGIN
+          authorized-grant-types: password,refresh_token
+          client-id: CommonClientId
+          client-scope: all
+          client-secret: password
+          refresh-token-validity: ${COMMON_REFRESH_TOKEN_VALIDITY:1209600}
+          resource-ids: authorization
+  feign:
+    appery-io:
+      url: https://api.appery.io/rest/1/db/collections
+      api-key: ${APPERY_API_KEY:#{null}}
+    faces:
+      connect-timeout: ${CONNECTION_TIMEOUT:10000}
+      read-timeout: ${READ_TIMEOUT:60000}
+      retryer:
+        max-attempts: ${MAX_ATTEMPTS:1}
+
+spring:
+  profiles:
+    active: prod
+  servlet:
+    multipart:
+      max-file-size: ${MAX_FILE_SIZE:5MB}
+      max-request-size: ${MAX_REQUEST_SIZE:10MB}
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${POSTGRES_URL:jdbc:postgresql://compreface-postgres-db:5432/frs}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
+    continue-on-error: true
+    hikari:
+      maximum-pool-size: 3
+      minimum-idle: 3
+  jpa:
+    properties:
+      hibernate:
+        default_schema: public
+        jdbc.lob.non_contextual_creation: true # fix for Caused by: java.sql.SQLFeatureNotSupportedException: Method org.postgresql.jdbc.PgConnection.createClob() is not yet implemented.
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQL10Dialect
+    hibernate:
+      ddl-auto: none
+    database: postgresql
+    open-in-view: true
+    generate-ddl: false
+  liquibase:
+    parameters:
+      common-client:
+        client-id: ${app.security.oauth2.clients.COMMON.client-id}
+        access-token-validity: ${app.security.oauth2.clients.COMMON.access-token-validity}
+        refresh-token-validity: ${app.security.oauth2.clients.COMMON.refresh-token-validity}
+        authorized-grant-types: ${app.security.oauth2.clients.COMMON.authorized-grant-types}
+  mail:
+    enable: ${ENABLE_EMAIL_SERVER:false}
+    host: ${EMAIL_HOST:example.com}
+    username: ${EMAIL_USERNAME:example@example.com}
+    from: ${EMAIL_FROM:name <example@example.com>}
+    password: ${EMAIL_PASSWORD:example}
+    port: 587
+    test-connection: false
+    properties.mail:
+      debug: true
+      smtp:
+        connectiontimeout: 12000
+        writetimeout: 12000
+        starttls:
+          enable: true
+        ssl:
+          trust: ${EMAIL_HOST}
+        auth: true
+  main:
+    allow-bean-definition-overriding: true
+
+security:
+  signing-key: MaYzkSjmkzPC57L
+  encoding-strength: 256
+  expire-length: 86400000
+
+swagger:
+  auth:
+    server: http://localhost:${server.port}
+  info:
+    title: CompreFace - ADMIN
+    version: 0.0.2-SNAPSHOT
+
+host:
+  frs: ${FRS_CRUD_HOST:http://localhost:8000}
+  full:
+    dns:
+      auth:
+        link: ${DNS_URL:http://localhost:${server.port}}
+
+registration:
+  token:
+    expires: 3600000
+    scheduler:
+      period: 300000
+
+forgot-password:
+  reset-password-token:
+    expires: 900000
+  cleaner:
+    scheduler:
+      cron: '0 0 0 * * ?'
+
+# "environment" and "image" blocks should be same in those files:
+#    * api/src/main/resources/application.properties
+#    * admin/src/main/resources/application.properties
+
+image:
+  types:
+    - tif
+    - tiff
+    - jpg
+    - jpeg
+    - png
+    - bmp
+    - ico
+    - gif
+    - webp
+  saveImagesToDB: ${SAVE_IMAGES_TO_DB:true}
+
+statistic:
+  model:
+    months: ${MODEL_STATISTIC_MONTHS:6}
+
+environment:
+  servers:
+    PYTHON:
+      url: ${PYTHON_URL:http://compreface-core:3000}

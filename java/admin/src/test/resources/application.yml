@@ -1,0 +1,119 @@
+server:
+  port: ${CRUD_PORT:8080}
+
+app:
+  security:
+    oauth2:
+      clients:
+        COMMON:
+          access-token-validity: 2400
+          authorities: ROLE_APP_LOGIN
+          authorized-grant-types: password,refresh_token
+          client-id: CommonClientId
+          client-scope: all
+          client-secret: password
+          refresh-token-validity: 1209600
+          resource-ids: authorization
+  feign:
+    appery-io:
+      url: https://localhost/rest/1/db/collections
+      api-key: ${APPERY_API_KEY:qwe1-rty2-uio3}
+    faces:
+      connect-timeout: ${CONNECTION_TIMEOUT:10000}
+      read-timeout: ${READ_TIMEOUT:60000}
+      retryer:
+        max-attempts: ${MAX_ATTEMPTS:1}
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: ${MAX_FILE_SIZE:5MB}
+      max-request-size: ${MAX_REQUEST_SIZE:10MB}
+  flyway:
+    enabled: false
+  jpa:
+    properties:
+      hibernate:
+        default_schema: public
+        jdbc.lob.non_contextual_creation: true # fix for Caused by: java.sql.SQLFeatureNotSupportedException: Method org.postgresql.jdbc.PgConnection.createClob() is not yet implemented.
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQL10Dialect
+    hibernate:
+      ddl-auto: none
+    database: postgresql
+    open-in-view: true
+    generate-ddl: false
+  liquibase:
+    parameters:
+      common-client:
+        client-id: ${app.security.oauth2.clients.COMMON.client-id}
+        access-token-validity: ${app.security.oauth2.clients.COMMON.access-token-validity}
+        refresh-token-validity: ${app.security.oauth2.clients.COMMON.refresh-token-validity}
+        authorized-grant-types: ${app.security.oauth2.clients.COMMON.authorized-grant-types}
+  mail:
+    from: compreface@exadel.com
+    username: compreface@exadel.com
+    password: 1234567890
+    host: 127.0.0.1
+    protocol: smtp
+    port: 3025
+    test-connection: false
+    enable: false
+    properties.mail:
+      debug: true
+      smtp:
+        connectiontimeout: 12000
+        writetimeout: 12000
+        starttls:
+          enable: true
+        ssl:
+          trust: ${EMAIL_HOST}
+  main:
+    allow-bean-definition-overriding: true
+
+host:
+  frs: ${FRS_CRUD_HOST:http://localhost:8000}
+  full:
+    dns:
+      auth:
+        link: http://localhost:${server.port}
+
+logging:
+  level:
+    web: DEBUG
+    org.springframework.web: DEBUG
+
+registration:
+  token:
+    expires: 3600000
+    scheduler:
+      period: 300000
+
+forgot-password:
+  reset-password-token:
+    expires: 900000
+  cleaner:
+    scheduler:
+      cron: '0 0 0 * * ?'
+
+environment:
+  servers:
+    PYTHON:
+      url: ${PYTHON_URL:http://compreface-core:3000}
+
+image:
+  types:
+    - tif
+    - tiff
+    - jpg
+    - jpeg
+    - png
+    - bmp
+    - ico
+    - gif
+    - webp
+  saveImagesToDB: ${SAVE_IMAGES_TO_DB:true}
+
+statistic:
+  model:
+    months: ${MODEL_STATISTIC_MONTHS:6}

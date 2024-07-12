@@ -1,0 +1,124 @@
+/*!
+ * Copyright (c) 2020 the original author or authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
+@import 'media.scss';
+@import 'sizes.scss';
+
+$width-container: 500px;
+$hint-color: #a3afbc;
+
+@mixin form-btn() {
+  width: 100%;
+  padding: 12px 0;
+  line-height: 22px;
+}
+
+@mixin form-wrapper() {
+  width: 100%;
+  width: $width-container;
+  text-align: center;
+  padding: 0;
+}
+
+@mixin plain-element {
+  border: none;
+  background: none;
+  outline: none;
+}
+
+@mixin form-field($lighter-gray, $light-grey) {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 1.8rem;
+  width: 100%;
+  label {
+    color: $dark-blue;
+    font-weight: bold;
+    font-size: $text-md;
+    .hint {
+      margin-left: 15px;
+      font-size: $text-xs;
+      color: $hint-color;
+      font-weight: 300;
+    }
+  }
+  input,
+  select,
+  .mat-select {
+    @include plain-element;
+    margin-top: 0.5rem;
+    padding: 0.5rem 0;
+    width: 100%;
+    border-bottom: 1px solid $lighter-gray;
+    color: $dark-blue;
+    font-size: $text-sm;
+
+    &::placeholder {
+      color: $pale-blue;
+      font-size: $text-sm;
+    }
+  }
+  .err {
+    font-weight: bold;
+    font-size: $text-xs;
+    color: $red;
+  }
+}
+
+@mixin login-card($dark-blue, $lighter-grey) {
+  color: $dark-blue;
+  padding: 35px;
+  margin-bottom: 3rem;
+  border-radius: 25px;
+  border: 1px solid #e1dfdf;
+  width: $width-container;
+
+  &--title {
+    margin-top: 5px;
+    padding-bottom: 1.5rem;
+    font-size: $text-lg;
+    line-height: 60px;
+    font-weight: 800;
+    display: block;
+    text-align: center;
+    color: $dark-blue;
+  }
+  .btn {
+    width: 100%;
+    margin: 35px 0 25px;
+    font-size: $text-sm;
+    height: 54px;
+  }
+}
+@mixin login-link($orange) {
+  font-size: $text-sm;
+  line-height: 23px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  a {
+    text-align: center;
+    color: $orange;
+    text-decoration: underline;
+  }
+}
+
+@mixin submit-btn {
+  color: $white;
+  background: $light-blue;
+  font-weight: bold;
+  border-radius: 15px;
+}

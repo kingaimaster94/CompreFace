@@ -1,0 +1,57 @@
+<!--
+  ~ Copyright (c) 2020 the original author or authors
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+  ~ or implied. See the License for the specific language governing
+  ~ permissions and limitations under the License.
+  -->
+
+<h1 mat-dialog-title class="title">{{ 'toolbar.user_info_change' | translate }}</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <div class="form-field" appearance="outline" floatLabel="always" hideRequiredMarker>
+      <label>{{ 'registration.first_name' | translate }}</label>
+      <div class="err" *ngIf="form.controls.firstName.status === 'INVALID' && form.controls.firstName.touched && !form.value.firstName">
+        {{ 'registration.name_restriction' | translate }}
+      </div>
+      <div class="err" *ngIf="form.value.firstName.length > maxLength">
+        {{ 'common.input_lengh_err' | translate }}
+      </div>
+      <input formControlName="firstName" name="firstName" placeholder="{{ 'registration.first_name' | translate }}" required />
+    </div>
+
+    <div class="form-field" appearance="outline" floatLabel="always" hideRequiredMarker>
+      <label>{{ 'registration.last_name' | translate }}</label>
+      <div class="err" *ngIf="form.controls.lastName.status === 'INVALID' && form.controls.lastName.touched && !form.value.lastName">
+        {{ 'registration.last_name_restriction' | translate }}
+      </div>
+      <div class="err" *ngIf="form.value.lastName.length > maxLength">
+        {{ 'common.input_lengh_err' | translate }}
+      </div>
+      <input formControlName="lastName" name="lastName" placeholder="{{ 'registration.last_name' | translate }}" required />
+    </div>
+    <div class="actions">
+      <button class="cancel" type="button" (click)="onCancelClick()" cdkFocusInitial>{{ 'common.capital.cancel' | translate }}</button>
+      <button
+        class="rename"
+        type="submit"
+        (click)="onChangeClick()"
+        [disabled]="!form.valid"
+        [ngStyle]="{ opacity: !form.valid ? '0.5' : '1' }"
+      >
+        {{ 'common.capital.rename' | translate }}
+      </button>
+    </div>
+  </form>
+</div>
+<button class="button-cross" mat-icon-button (click)="onCancelClick()">
+  <mat-icon svgIcon="cross_new" inline="true"></mat-icon>
+</button>

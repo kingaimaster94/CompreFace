@@ -1,0 +1,65 @@
+spring:
+  cache:
+    type: none
+  flyway:
+    enabled: false
+  liquibase:
+    enabled: false
+    parameters:
+      common-client:
+        client-id: CommonClientId
+        access-token-validity: 2400
+        refresh-token-validity: 1209600
+        authorized-grant-types: password,refresh_token
+  jpa:
+    properties:
+      hibernate:
+        default_schema: public
+        jdbc:
+          lob.non_contextual_creation: true # fix for Caused by: java.sql.SQLFeatureNotSupportedException: Method org.postgresql.jdbc.PgConnection.createClob() is not yet implemented.
+          batch_size: 10
+        order_inserts: true
+        order_updates: true
+        batch_versioned_data: true
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQL10Dialect
+    show_sql: true
+
+environment:
+  servers:
+    PYTHON:
+      url: ${PYTHON_URL:http://compreface-core:3000}
+
+image:
+  types:
+    - tif
+    - tiff
+    - jpg
+    - jpeg
+    - png
+    - bmp
+    - ico
+    - gif
+    - webp
+  saveImagesToDB: ${SAVE_IMAGES_TO_DB:true}
+
+app:
+  feign:
+    appery-io:
+      url: https://localhost/rest/1/db/collections
+      api-key: ${APPERY_API_KEY:#{null}}
+    faces:
+      connect-timeout: ${CONNECTION_TIMEOUT:10000}
+      read-timeout: ${READ_TIMEOUT:60000}
+      retryer:
+        max-attempts: ${MAX_ATTEMPTS:1}
+
+statistic:
+  model:
+    cron-expression: ${MODEL_STATISTIC_CRON_EXPRESSION:0 0 * ? * *}
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.hibernate.type: TRACE

@@ -1,0 +1,77 @@
+/*!
+ * Copyright (c) 2020 the original author or authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
+$mobile-width: 576px;
+$tablet-portrait-width: 768px;
+$tablet-landscape-width: 992px;
+$desktop-width-sm: 1080px;
+$desktop-width: 1200px;
+$desktop-width-lg: 1630px;
+$short-apiKey-length: 50px;
+
+@mixin mobile {
+  @media (max-width: #{$tablet-portrait-width - 1px}) {
+    @content;
+  }
+}
+
+@mixin mobile-portrait {
+  @media (max-width: #{$mobile-width - 1px}) {
+    @content;
+  }
+}
+
+@mixin mobile-landscape {
+  @media (min-width: #{$mobile-width}) and (max-width: #{$tablet-portrait-width - 1px}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: #{$tablet-portrait-width}) and (max-width: #{$desktop-width - 1px}) {
+    @content;
+  }
+}
+
+@mixin tablet-portrait {
+  @media (min-width: #{$tablet-portrait-width}) and (max-width: #{$tablet-landscape-width - 1px}) {
+    @content;
+  }
+}
+
+@mixin tablet-landscape {
+  @media (min-width: #{$tablet-landscape-width}) and (max-width: #{$desktop-width - 1px}) {
+    @content;
+  }
+}
+
+@mixin desktop-sm {
+  @media (max-width: #{$desktop-width-sm}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (max-width: #{$desktop-width}) {
+    @content;
+  }
+}
+
+@mixin desktop-lg {
+  @media (max-width: #{$desktop-width-lg}) {
+    @content;
+  }
+}

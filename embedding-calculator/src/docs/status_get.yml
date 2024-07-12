@@ -1,0 +1,34 @@
+tags:
+  - Core
+summary: 'Get service availability status.'
+description: 'Returns the service status and versions of available plugins.'
+operationId: getStatus
+produces:
+  - application/json
+responses:
+  '200':
+    description: 'Service is available.'
+    schema:
+      type: object
+      properties:
+        availiable_plugins:
+          type: object
+          properties:
+            detector:
+              type: string
+              example: facenet.FaceDetector
+            calculator:
+              type: string
+              example: facenet.Calculator
+        similarity_coefficients:
+          type: array
+          example: [1.1, 2.5]
+        calculator_version:
+          type: string
+          example: facenet.Calculator
+        status:
+          type: string
+          example: OK
+        build_version:
+          type: string
+          example: build-1.2.684-rc2

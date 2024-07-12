@@ -1,0 +1,52 @@
+<!--
+  ~ Copyright (c) 2020 the original author or authors
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+  ~ or implied. See the License for the specific language governing
+  ~ permissions and limitations under the License.
+  -->
+<div class="delete-container">
+  <h1 mat-dialog-title class="title">{{ 'common.capital.delete' | translate }} {{ data.entityType }}</h1>
+  <div class="mat-body-1 description" mat-dialog-content>
+    <ng-container *ngIf="!data.isAppOwner; else warningMsg">
+      <p *ngIf="data.entityType === EntityType.User">
+        {{ 'users.confirmation_dialog.delete_confirmation_question' | translate }}
+      </p>
+      <p *ngIf="data.entityType === EntityType.Examples">
+        {{ 'manage_collection.confirmation_dialog.delete_examples_confirmation_question' | translate }}
+      </p>
+      <p *ngIf="data.entityType === EntityType.Subject">
+        {{ 'manage_collection.confirmation_dialog.delete_subject_confirmation_question' | translate }}
+      </p>
+    </ng-container>
+
+    <ng-template #warningMsg>
+      <p *ngIf="data.owner; else userAdmin">
+        {{ 'users.confirmation_dialog.warning_msg_owner' | translate: { user: data.user, applicationNames: appNames } }}
+      </p>
+
+      <ng-template #userAdmin>
+        <p>{{ 'users.confirmation_dialog.warning_msg_admin' | translate: { user: data.user, applicationNames: appNames } }}</p>
+      </ng-template>
+    </ng-template>
+  </div>
+  <div class="actions">
+    <button mat-flat-button [mat-dialog-close]="false" class="cancel-btn">
+      {{ 'common.capital.cancel' | translate }}
+    </button>
+    <button mat-flat-button [mat-dialog-close]="true" class="delete-btn">
+      {{ 'common.capital.delete' | translate }}
+    </button>
+  </div>
+  <button class="button-cross" mat-icon-button [mat-dialog-close]="false">
+    <mat-icon svgIcon="cross_new"></mat-icon>
+  </button>
+</div>
